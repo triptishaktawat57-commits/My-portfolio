@@ -1,0 +1,11 @@
+const $ = (s, c = document) => c.querySelector(s);
+const progress = $('.progress');
+window.addEventListener('scroll', () => { const h = document.documentElement.scrollHeight - innerHeight; progress.style.width = `${(scrollY / h) * 100}%`; }, {passive:true});
+const io = new IntersectionObserver(entries => entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }}), {threshold:.15});
+document.querySelectorAll('.timeline-card, .values > div, .roadmap-list article, .building-box').forEach(el => io.observe(el));
+document.querySelectorAll('.magnetic').forEach(el => { el.addEventListener('mousemove', e => { const r=el.getBoundingClientRect(), x=(e.clientX-r.left-r.width/2)*.16, y=(e.clientY-r.top-r.height/2)*.16; el.style.transform=`translate(${x}px,${y}px)`; }); el.addEventListener('mouseleave',()=>el.style.transform=''); });
+document.querySelectorAll('.skill').forEach(el => el.addEventListener('click', () => { document.querySelectorAll('.skill').forEach(x=>x.classList.remove('active')); el.classList.add('active'); }));
+$('.menu').addEventListener('click', () => { const nav=$('.nav'), open=nav.classList.toggle('open'); $('.menu').setAttribute('aria-expanded', open); });
+$('.top').addEventListener('click',()=>scrollTo({top:0,behavior:'smooth'}));
+document.querySelector('form').addEventListener('submit', e => { e.preventDefault(); $('.form-note').textContent = 'Thank you — your message is ready to send.'; e.target.reset(); });
+$('#year').textContent = new Date().getFullYear();
